@@ -1,0 +1,2 @@
+import{_ as a}from"./BalChip-810690c3.js";import{d as n,o as p,B as r,w as c,e as _,t as i,T as l}from"./index-60943df8.js";const d=n({__name:"BalChipNew",props:{size:{default:"sm"}},setup(e){const o=e;return(s,m)=>{const t=a;return p(),r(t,l(o,{color:"orange",class:"uppercase",outline:!1}),{default:c(()=>[_(i(s.$t("new")),1)]),_:1},16)}}});export{d as _};
+//# sourceMappingURL=BalChipNew.vue_vue_type_script_setup_true_lang-42797145.js.map

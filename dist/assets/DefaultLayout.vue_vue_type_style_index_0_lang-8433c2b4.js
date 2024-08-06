@@ -1,0 +1,2 @@
+import{A as t,F as s}from"./AppNav-6d67b64c.js";import{d as _,o as n,a as r,b as e,f as a,aD as c}from"./index-60943df8.js";const l={class:"app-body"},p={class:"pb-16"},m=_({__name:"DefaultLayout",setup(d){return(o,u)=>(n(),r("div",null,[e("div",l,[a(t),e("div",p,[c(o.$slots,"default")])]),a(s)]))}});export{m as _};
+//# sourceMappingURL=DefaultLayout.vue_vue_type_style_index_0_lang-8433c2b4.js.map

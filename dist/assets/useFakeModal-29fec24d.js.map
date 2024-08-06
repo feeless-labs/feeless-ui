@@ -1,0 +1,1 @@
+{"version":3,"file":"useFakeModal-29fec24d.js","sources":["../../src/composables/useFakeModal.ts"],"sourcesContent":["// Global ref to change background color in focussedLayout (hack to use a whole page as a modal with enabled vertical scroll)\nexport const isFakeModal = ref(false);\n"],"names":["isFakeModal","ref"],"mappings":"wCACO,MAAAA,EAAAC,EAAA,EAAA"}
