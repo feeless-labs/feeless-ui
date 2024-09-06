@@ -1,2 +1,0 @@
-import{d as c,c as t,o as r,a as _,aD as l,aE as n,C as d,_ as p}from"./index-60943df8.js";const u=c({__name:"BalCircle",props:{size:{default:"16"},color:{default:"gray"}},setup(s){const e=s,a=t(()=>({[`w-${e.size} h-${e.size}`]:!0,[`bg-${e.color}-500`]:!0}));return(o,i)=>(r(),_("div",{class:n(["bal-circle",d(a)])},[l(o.$slots,"default",{},void 0,!0)],2))}});const f=p(u,[["__scopeId","data-v-eddc705b"]]);export{f as _};
-//# sourceMappingURL=BalCircle-528e0679.js.map

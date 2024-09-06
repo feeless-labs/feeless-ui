@@ -48,7 +48,7 @@
         loading
         disabled
         :loadingLabel="
-          swapping.isCowswapSwap.value ? $t('loadingBestPrice') : $t('loading')
+          $t('loading')
         "
         block
       />
@@ -175,14 +175,11 @@ export default defineComponent({
     const swapDisabled = computed(() => {
       const hasMismatchedNetwork = isMismatchedNetwork.value;
       const hasAmountsError = !tokenInAmount.value || !tokenOutAmount.value;
-      const hasCowswapErrors =
-        swapping.isCowswapSwap.value &&
-        swapping.cowswap.hasValidationError.value;
+      
       const hasBalancerErrors =
         swapping.isBalancerSwap.value && isHighPriceImpact.value;
       return (
         hasAmountsError ||
-        hasCowswapErrors ||
         hasBalancerErrors ||
         hasMismatchedNetwork
       );
@@ -217,46 +214,7 @@ export default defineComponent({
           };
         }
       }
-      if (swapping.isCowswapSwap.value) {
-        if (swapping.cowswap.validationError.value != null) {
-          const validationError = swapping.cowswap.validationError.value;
-          if (validationError === ApiErrorCodes.SellAmountDoesNotCoverFee) {
-            return {
-              header: t('cowswapErrors.lowAmount.header'),
-              body: t('cowswapErrors.lowAmount.body'),
-            };
-          } else if (validationError === ApiErrorCodes.PriceExceedsBalance) {
-            return {
-              header: t('cowswapErrors.lowBalance.header', [
-                swapping.tokenIn.value.symbol,
-              ]),
-              body: t('cowswapErrors.lowBalance.body', [
-                swapping.tokenIn.value.symbol,
-                fNum(
-                  formatUnits(
-                    swapping.getQuote().maximumInAmount,
-                    swapping.tokenIn.value.decimals
-                  ),
-                  FNumFormats.token
-                ),
-                fNum(swapping.slippageBufferRate.value, FNumFormats.percent),
-              ]),
-            };
-          } else if (validationError === ApiErrorCodes.NoLiquidity) {
-            return {
-              header: t('cowswapErrors.noLiquidity.header', [
-                swapping.tokenIn.value.symbol,
-              ]),
-              body: t('cowswapErrors.noLiquidity.body'),
-            };
-          } else {
-            return {
-              header: t('cowswapErrors.genericError.header'),
-              body: swapping.cowswap.validationError.value,
-            };
-          }
-        }
-      } else if (swapping.isBalancerSwap.value) {
+      if (swapping.isBalancerSwap.value) {
         if (isHighPriceImpact.value) {
           return {
             header: t('highPriceImpact'),
@@ -268,14 +226,6 @@ export default defineComponent({
       return undefined;
     });
     const warning = computed(() => {
-      if (swapping.isCowswapSwap.value) {
-        if (swapping.cowswap.warnings.value.highFees) {
-          return {
-            header: t('cowswapWarnings.highFees.header'),
-            body: t('cowswapWarnings.highFees.body'),
-          };
-        }
-      }
       return undefined;
     });
 

@@ -1,12 +1,10 @@
 import { fromUnixTime, getUnixTime, startOfHour } from 'date-fns';
 import { groupBy, invert, last } from 'lodash';
-
 import { twentyFourHoursInSecs } from '@/composables/useTime';
 import { TOKENS } from '@/constants/tokens';
 import { getAddressFromPoolId } from '@/lib/utils';
 import { retryPromiseWithDelay } from '@/lib/utils/promise';
 import { configService as _configService } from '@/services/config/config.service';
-
 import { CoingeckoClient } from '../coingecko.client';
 import { CoingeckoService, getPlatformId } from '../coingecko.service';
 import { getAddress } from '@ethersproject/address';

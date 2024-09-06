@@ -1,2 +1,0 @@
-const e={"https://raw.githubusercontent.com/balancer/tokenlists/main/generated/balancer.tokenlist.json":{name:"Balancer",version:{major:1,minor:0,patch:0},keywords:["Balancer","DeFi","DEX","AMM","Exchange","Liquidity","Pool","Token","Swap"],logoURI:"https://raw.githubusercontent.com/balancer/pebbles/master/images/pebbles-pad.256w.png",timestamp:"2024-07-31T08:59:44.126Z",tokens:[]}};export{e as default};
-//# sourceMappingURL=tokens-1075-d0c7cb0f.js.map

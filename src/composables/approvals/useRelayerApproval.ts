@@ -8,7 +8,6 @@ import { useI18n } from 'vue-i18n';
 import { TransactionActionInfo } from '@/types/transactions';
 import useRelayerApprovalTx from '@/composables/approvals/useRelayerApprovalTx';
 import useGnosisSafeApp from '@/composables/useGnosisSafeApp';
-import { COW_RELAYER_CONTRACT_ADDRESS } from '@/services/cowswap_deprecated/constants';
 import { isWalletConnectWallet } from '@/services/web3/wallet-names';
 import { useUserSettings } from '@/providers/user-settings.provider';
 import { getRelayer } from '@/dependencies/Relayer';
@@ -17,14 +16,12 @@ import { getRelayer } from '@/dependencies/Relayer';
  * TYPES
  */
 export enum RelayerType {
-  COWSWAP = 'Cowswap',
-  LIDO = 'Lido',
+
   BATCH = 'Batch',
 }
 
 export const relayerAddressMap = {
-  [RelayerType.COWSWAP]: COW_RELAYER_CONTRACT_ADDRESS,
-  [RelayerType.LIDO]: configService.network.addresses.lidoRelayer,
+
   [RelayerType.BATCH]: configService.network.addresses.batchRelayer,
 };
 
@@ -73,6 +70,8 @@ export default function useRelayerApproval(relayerType: RelayerType) {
     const relayerAddress = relayerAddressMap[relayerType];
     const signer = getSigner();
     const signerAddress = await signer.getAddress();
+    if(relayerAddress != null)
+    {
     const signature = await Relayer.signRelayerApproval(
       relayerAddress,
       signerAddress,
@@ -83,6 +82,7 @@ export default function useRelayerApproval(relayerType: RelayerType) {
       ) as unknown as Vault
     );
     relayerSignature.value = signature;
+    }
   }
 
   /**

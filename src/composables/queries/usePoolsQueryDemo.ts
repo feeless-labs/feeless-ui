@@ -1,23 +1,22 @@
 import { useInfiniteQuery, UseInfiniteQueryOptions } from '@tanstack/vue-query';
-
 import { POOLS } from '@/constants/pools';
 import QUERY_KEYS from '@/constants/queryKeys';
 import { Pool } from '@/services/pool/types';
-
 import useNetwork from '../useNetwork';
 import { useTokens } from '@/providers/tokens.provider';
 import { configService } from '@/services/config/config.service';
-import { GraphQLArgs, PoolsRepositoryFetchOptions } from '@feeless/sdk';
+import { GraphQLArgs, PoolsRepositoryFetchOptions, PoolsStaticRepository } from '@feeless/sdk';
 import { getPoolsFallbackRepository } from '@/dependencies/PoolsFallbackRepository';
 import { PoolDecorator } from '@/services/pool/decorators/pool.decorator';
 import { flatten } from 'lodash';
 import { tokenTreeLeafs } from '../usePoolHelpers';
 import { balancerSubgraphService } from '@/services/balancer/subgraph/balancer-subgraph.service';
 import { poolsStoreService } from '@/services/pool/pools-store.service';
-
 import { bnum } from '@/lib/utils';
 import { PoolAttributeFilter, PoolFilterOptions } from '@/types/pools';
 import { weeksAgoInSecs } from '../useTime';
+import fetch from 'node-fetch';
+
 
 type PoolsQueryResponse = {
   pools: Pool[];
@@ -51,28 +50,25 @@ export default function usePoolsQuery(
   function initializeDecoratedSubgraphRepository() {
     return {
       fetch: async (options: PoolsRepositoryFetchOptions): Promise<Pool[]> => {
-        console.assert("start to request pools");
+       
         const pools = await balancerSubgraphService.pools.get(
           getQueryArgs(options)
         );
-
-        console.assert("number of pools:" + pools.length);
-        const poolDecorator = new PoolDecorator(pools);
-        let decoratedPools = await poolDecorator.decorate(tokenMeta.value);
-
-  
-        decoratedPools = await poolDecorator.reCalculateTotalLiquidities();
-
-        return decoratedPools;
+        //const poolDecorator = new PoolDecorator(pools);
+        //let decoratedPools = await poolDecorator.decorate(tokenMeta.value);
+        //decoratedPools = await poolDecorator.reCalculateTotalLiquidities();
+        //return decoratedPools;
+        return pools;
       },
     };
   }
 
+
   function buildRepositories() {
     const repositories: any[] = [];
+    
     const subgraphRepository = initializeDecoratedSubgraphRepository();
     repositories.push(subgraphRepository);
-
     return repositories;
   }
 
@@ -99,7 +95,7 @@ export default function usePoolsQuery(
       where: {
         tokensList: { [tokensListFilterOperation]: tokenListFormatted },
         poolType: { in: POOLS.IncludedPoolTypes },
-        totalShares: { gt: 0.00001 },
+        totalShares: { gt: 0 },
         id: { not_in: POOLS.BlockList },
       },
     };

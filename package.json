@@ -54,7 +54,7 @@
     "@ethersproject/contracts": "~5.7.0",
     "@ethersproject/providers": "~5.7.0",
     "@ethersproject/units": "~5.7.0",
-    "@feeless/sdk": "^@feeless/sdk@1.1.6-beta.24.2-no-api",
+    "@feeless/sdk": "^@feeless/sdk@1.1.6-beta.24.6-no-api-demo",
     "@feeless/v2-deployments": "^3.2.0-1-2",
     "@georgeroman/balancer-v2-pools": "^0.0.5",
     "@gnosis.pm/safe-apps-provider": "^0.6.0",

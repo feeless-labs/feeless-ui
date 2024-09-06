@@ -1,6 +1,5 @@
 import { SUPPORTED_FIAT } from '@/constants/currency';
-
-import { PriceService } from './api/price.service';
+import { MockPriceService } from './api/mockPriceService';
 import { coingeckoClient } from './coingecko.client';
 import config from '@/lib/config';
 
@@ -11,7 +10,7 @@ export const getNativeAssetId = (chainId: string): string => {
     })
   );
 
-  return mapping[chainId] || 'ethereum';
+  return mapping[chainId] || 'iota';
 };
 
 export const getPlatformId = (chainId: string): string => {
@@ -21,19 +20,19 @@ export const getPlatformId = (chainId: string): string => {
     })
   );
 
-  return mapping[chainId] || 'ethereum';
+  return mapping[chainId] || 'iota';
 };
 
 export class CoingeckoService {
   supportedFiat: string;
-  prices: PriceService;
+  prices: MockPriceService;
 
   constructor(
     public readonly client = coingeckoClient,
-    priceServiceClass = PriceService
+    priceServiceClass = MockPriceService
   ) {
     this.supportedFiat = SUPPORTED_FIAT.join(',');
-    this.prices = new priceServiceClass(this);
+    this.prices = new priceServiceClass();
   }
 }
 

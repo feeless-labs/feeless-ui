@@ -1200,10 +1200,10 @@
     "@ethersproject/properties" "^5.7.0"
     "@ethersproject/strings" "^5.7.0"
 
-"@feeless/sdk@^@feeless/sdk@1.1.6-beta.24.2-no-api":
-  version "1.1.6-beta.24.2-no-api"
-  resolved "https://registry.npmjs.org/@feeless/sdk/-/sdk-1.1.6-beta.24.2-no-api.tgz#65d9668c1653604d4ffe4893a17752581a4ea4a7"
-  integrity sha512-UctfSXysbZB/+5z3XPst90G+EnQtWE1M8kA7DEXekdsTINmOBRC7Oyjqa7/6BKsvMMTfcbgtnrNWtkmBplTtpg==
+"@feeless/sdk@^1.1.6-beta.24.3-no-api":
+  version "1.1.6-beta.24.4-no-api"
+  resolved "https://registry.npmjs.org/@feeless/sdk/-/sdk-1.1.6-beta.24.4-no-api.tgz#97c251e3cd0592abfa3349a73d19be6c18d8e885"
+  integrity sha512-tMNwULqziM96BzPbrAmZTaX4dvmlViNGk3NGYqLDiuYtRa8TsZREyCkXHgYrx6CpH+6YsbBavpuhHdz13ZZrQw==
   dependencies:
     "@balancer-labs/sor" "^4.1.1-beta.17"
     "@ethersproject/abi" "^5.4.0"
@@ -1215,6 +1215,30 @@
     "@ethersproject/constants" "^5.4.0"
     "@ethersproject/contracts" "^5.4.0"
     "@ethersproject/providers" "^5.4.5"
+    "@feeless/sdk" "^1.1.6-beta.24.3-no-api"
+    axios "^0.24.0"
+    ethers "^5"
+    graphql "^15.6.1"
+    graphql-request "^3.5.0"
+    json-to-graphql-query "^2.2.4"
+    lodash "^4.17.21"
+
+"@feeless/sdk@^@feeless/sdk@1.1.6-beta.24.6-no-api-demo":
+  version "1.1.6-beta.24.6-no-api-demo"
+  resolved "https://registry.npmjs.org/@feeless/sdk/-/sdk-1.1.6-beta.24.6-no-api-demo.tgz#b7e6315aada9fd90515ecacc577ca8b3126e1c9b"
+  integrity sha512-gGZQp6EEomnvJXjVtL7B9JzwgDr97QwdzyBH8k9u7gVvUR5TJUlh9a74dMxRa5ZRW8+HuwNsZzMAiX7VK44y/Q==
+  dependencies:
+    "@balancer-labs/sor" "^4.1.1-beta.17"
+    "@ethersproject/abi" "^5.4.0"
+    "@ethersproject/abstract-signer" "^5.4.0"
+    "@ethersproject/address" "^5.4.0"
+    "@ethersproject/base64" "5.5.0"
+    "@ethersproject/bignumber" "^5.4.0"
+    "@ethersproject/bytes" "^5.4.0"
+    "@ethersproject/constants" "^5.4.0"
+    "@ethersproject/contracts" "^5.4.0"
+    "@ethersproject/providers" "^5.4.5"
+    "@feeless/sdk" "^1.1.6-beta.24.3-no-api"
     axios "^0.24.0"
     ethers "^5"
     graphql "^15.6.1"

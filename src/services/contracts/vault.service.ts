@@ -7,11 +7,8 @@ import {
 import { Vault__factory } from '@balancer-labs/typechain';
 import { TransactionResponse } from '@ethersproject/abstract-provider';
 import { ContractInterface } from '@ethersproject/contracts';
-
-import { calculateValidTo } from '../cowswap_deprecated/utils';
-
+import { calculateValidTo } from './utils/utils';
 import ConfigService, { configService } from '@/services/config/config.service';
-
 import WalletService, {
   walletService as walletServiceInstance,
 } from '@/services/web3/wallet.service';

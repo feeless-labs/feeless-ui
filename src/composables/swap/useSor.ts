@@ -33,7 +33,6 @@ import { configService } from '@/services/config/config.service';
 import { rpcProviderService } from '@/services/rpc-provider/rpc-provider.service';
 import useWeb3 from '@/services/web3/useWeb3';
 import { TokenInfo } from '@/types/TokenList';
-
 import useEthers from '../useEthers';
 import useFathom from '../useFathom';
 import useNumbers, { FNumFormats } from '../useNumbers';
@@ -170,7 +169,6 @@ export default function useSor({
   tokenIn,
   tokenOut,
   slippageBufferRate,
-  isCowswapSwap,
 }: Props) {
   const pools = ref<SubgraphPoolBase[]>([]);
   const sorReturn = ref<SorReturn>({
@@ -350,10 +348,7 @@ export default function useSor({
   }
 
   async function handleAmountChange(): Promise<void> {
-    if (isCowswapSwap.value) {
-      return;
-    }
-
+    
     let amount = exactIn.value
       ? tokenInAmountInput.value
       : tokenOutAmountInput.value;

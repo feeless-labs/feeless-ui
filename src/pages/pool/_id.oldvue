@@ -51,7 +51,7 @@ const isRestakePreviewVisible = ref(false);
 /**
  * COMPOSABLES
  */
-const { prices } = useTokens();
+const { prices, priceQueryLoading } = useTokens();
 const { isWalletReady } = useWeb3();
 const _isVeBalPool = isVeBalPool(poolId);
 const { pool, isLoadingPool } = usePool();
@@ -141,7 +141,7 @@ onBeforeUnmount(() => {
 //#endregion
 
 const missingPrices = computed(() => {
-  if (pool.value && prices.value ) {
+  if (pool.value && prices.value && !priceQueryLoading.value) {
     const tokensWithPrice = Object.keys(prices.value);
     const tokens = tokenTreeLeafs(pool.value.tokens);
 

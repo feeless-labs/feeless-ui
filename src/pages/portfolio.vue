@@ -6,7 +6,7 @@ import PortfolioPageHero from '@/components/heros/PortfolioPageHero.vue';
 import { useLock } from '@/composables/useLock';
 import { providerUserPools } from '@/providers/local/user-pools.provider';
 import { provideUserStaking } from '@/providers/local/user-staking.provider';
-import UserInvestedInAffectedPoolAlert from '@/pages/recovery-exit/UserInvestedInAffectedPoolAlert.vue';
+
 
 /**
  * PROVIDERS

@@ -13,7 +13,7 @@ import { PoolDecorator } from '@/services/pool/decorators/pool.decorator';
 import { flatten } from 'lodash';
 import { tokenTreeLeafs } from '../usePoolHelpers';
 import { balancerSubgraphService } from '@/services/balancer/subgraph/balancer-subgraph.service';
-import { balancerAPIService } from '@/services/balancer/api/balancer-api.service';
+
 import { poolsStoreService } from '@/services/pool/pools-store.service';
 import { isBalancerApiDefined } from '@/lib/utils/balancer/api';
 import { bnum } from '@/lib/utils';
@@ -49,27 +49,6 @@ export default function usePoolsQuery(
     return fallbackRepository;
   }
 
-  function initializeDecoratedAPIRepository() {
-    return {
-      fetch: async (options: PoolsRepositoryFetchOptions): Promise<Pool[]> => {
-        const pools = await balancerAPIService.pools.get(getQueryArgs(options));
-
-        if (shouldInjectTokens) {
-          const tokens = flatten(
-            pools.map(pool => [
-              ...pool.tokensList,
-              ...tokenTreeLeafs(pool.tokens),
-              pool.address,
-            ])
-          );
-          injectTokens(tokens);
-        }
-
-        return pools;
-      },
-    };
-  }
-
   function initializeDecoratedSubgraphRepository() {
     return {
       fetch: async (options: PoolsRepositoryFetchOptions): Promise<Pool[]> => {
@@ -100,10 +79,7 @@ export default function usePoolsQuery(
 
   function buildRepositories() {
     const repositories: any[] = [];
-    if (isBalancerApiDefined) {
-      const balancerApiRepository = initializeDecoratedAPIRepository();
-      repositories.push(balancerApiRepository);
-    }
+   
     const subgraphRepository = initializeDecoratedSubgraphRepository();
     repositories.push(subgraphRepository);
 

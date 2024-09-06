@@ -1,0 +1,26 @@
+{
+  "pools": [
+    {
+      "id": "0x0c3861100485c118f63e50d615e75dad491e19c200020000000000000000000a",
+      "address": "0x0c3861100485C118f63e50D615E75daD491e19c2",
+      "name": "FLSIOTAAWeightedPool",
+      "type": "Weighted",
+      "tokens": [
+        {
+          "address": "0xB2E0DfC4820cc55829C71529598530E177968613",
+          "symbol": "wIOTA",
+          "decimals": 18
+        },
+        {
+          "address": "0xF4e2771F3aF3A523141bDE7b75e7fDe821f98251",
+          "symbol": "wFLS",
+          "decimals": 12
+        }
+      ],
+      "tokensList": [
+        "0xB2E0DfC4820cc55829C71529598530E177968613",
+        "0x1074021b00000000000000000000000000000000"
+      ]
+    }
+  ]
+}

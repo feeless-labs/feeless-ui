@@ -1,5 +1,4 @@
 import { getAddress, isAddress } from '@ethersproject/address';
-
 import { compact, omit, pick } from 'lodash';
 import {
   computed,
@@ -13,6 +12,9 @@ import {
 } from 'vue';
 import useAllowancesQuery from '@/composables/queries/useAllowancesQuery';
 import useBalancesQuery from '@/composables/queries/useBalancesQuery';
+import useTokenPricesQuery, {
+  TokenPrices,
+} from '@/composables/queries/useTokenPricesQuery';
 import useConfig from '@/composables/useConfig';
 import symbolKeys from '@/constants/symbol.keys';
 import { TOKENS } from '@/constants/tokens';
@@ -41,8 +43,9 @@ import useWeb3 from '@/services/web3/useWeb3';
 import { tokenListService } from '@/services/token-list/token-list.service';
 import { AmountToApprove } from '@/composables/approvals/useTokenApprovalActions';
 import BigNumber from 'bignumber.js';
+
 const { uris: tokenListUris } = tokenListService;
-export type TokenPrices = { [address: string]: number };
+
 /**
  * TYPES
  */
@@ -52,18 +55,6 @@ export interface TokensProviderState {
   spenders: string[];
   injectedPrices: TokenPrices;
 }
-
-// Definisci i prezzi statici qui
-const staticPrices: TokenPrices = {
-  '0x1D148Eb4C213e560a6bad71536b96AC5D6F1cDE3': 10,
-  '0xB2E0DfC4820cc55829C71529598530E177968613': 0.1236,
-  '0x553D8A5927FBA1c3eC05DdA667D6Cda3F5543d3a': 58429,
-  '0xd8058dA2dF3FBaBC03Ad8Ca51cAB4AAa3614B209' : 2501,
-  '0xCa2DBF6Ba5f3252Fd758C113A8c48D6D77406CaC' : 1,
-  '0xc4FA42632fea08274ACDB5c0d9331285C01717Ba' : 1,
-  '0x68EA743120BaCf2C277910700116Eb4b1C0643AA' : 1
-};
-
 
 /**
  * Provides an interface to all token static and dynamic metadata.
@@ -101,7 +92,7 @@ export const tokensProvider = (
       networkConfig.addresses.vault,
       configService.network.addresses.veBAL,
     ]),
-    injectedPrices: staticPrices, // Usa i prezzi statici qui
+    injectedPrices: {},
   });
 
   /**
@@ -157,6 +148,14 @@ export const tokensProvider = (
    * The prices, balances and allowances maps provide dynamic
    * metadata for each token in the tokens state array.
    ****************************************************************/
+  const {
+    data: priceData,
+    isSuccess: priceQuerySuccess,
+    isInitialLoading: priceQueryLoading,
+    isRefetching: priceQueryRefetching,
+    isError: priceQueryError,
+    refetch: refetchPrices,
+  } = useTokenPricesQuery(toRef(state, 'injectedPrices'));
 
   const {
     data: balanceData,
@@ -181,7 +180,7 @@ export const tokensProvider = (
   });
 
   const prices = computed(
-    (): TokenPrices => state.injectedPrices // Usa i prezzi statici
+    (): TokenPrices => (priceData.value ? priceData.value : {})
   );
   const balances = computed(
     (): BalanceMap => (balanceData.value ? balanceData.value : {})
@@ -202,12 +201,15 @@ export const tokensProvider = (
 
   const dynamicDataLoaded = computed(
     (): boolean =>
+      priceQuerySuccess.value &&
       balanceQuerySuccess.value &&
       allowanceQuerySuccess.value
   );
 
   const dynamicDataLoading = computed(
     (): boolean =>
+      priceQueryLoading.value ||
+      priceQueryRefetching.value ||
       onchainDataLoading.value
   );
 
@@ -215,7 +217,7 @@ export const tokensProvider = (
    * METHODS
    */
   /**
-   * Create token map from a token list tokens array.
+   * Create token map from a token list tokens array.const isEmpty = Object.keys(person).length === 0;
    */
   function mapTokenListTokens(tokenListMap: TokenListMap): TokenInfoMap {
     const isEmpty = Object.keys(tokenListMap).length === 0;
@@ -253,6 +255,8 @@ export const tokensProvider = (
 
     // Remove any duplicates
     addresses = [...new Set(addresses)];
+
+    console.warn("address:" + JSON.stringify(addresses));
 
     const existingAddresses = Object.keys(tokens.value);
     const existingAddressesMap = Object.fromEntries(
@@ -314,6 +318,8 @@ export const tokensProvider = (
       subset.length > 0 ? tokensToSearch : allTokenListTokens.value;
 
     const potentialAddress = getAddressFromPoolId(query);
+
+    console.warn("address:" + JSON.stringify(potentialAddress));
 
     if (isAddress(potentialAddress)) {
       const address = getAddress(potentialAddress);
@@ -527,9 +533,12 @@ export const tokensProvider = (
     balanceQueryLoading,
     dynamicDataLoaded,
     dynamicDataLoading,
+    priceQueryError,
+    priceQueryLoading,
     balancesQueryError,
     allowancesQueryError,
     // methods
+    refetchPrices,
     refetchBalances,
     refetchAllowances,
     injectTokens,

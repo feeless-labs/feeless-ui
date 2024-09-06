@@ -1,2 +1,0 @@
-import{d as n,a9 as p,o as e,B as o,w as a,f as u,at as m,eH as c}from"./index-60943df8.js";import{F as _}from"./FocussedLayout-883af427.js";import"./AppNavAlert-600f7ea4.js";import"./useFakeModal-29fec24d.js";const y=n({__name:"FocussedLayout",setup(i){return(t,l)=>{const r=p("router-view");return e(),o(_,null,{default:a(()=>[(e(),o(r,{key:t.$route.path},{default:a(({Component:s})=>[u(m,{appear:"",name:"appear"},{default:a(()=>[(e(),o(c(s)))]),_:2},1024)]),_:1}))]),_:1})}}});export{y as default};
-//# sourceMappingURL=FocussedLayout-af64bc81.js.map

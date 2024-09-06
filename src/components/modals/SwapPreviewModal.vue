@@ -4,7 +4,6 @@ import { formatUnits } from '@ethersproject/units';
 import { mapValues } from 'lodash';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-
 import SwapRoute from '@/components/cards/SwapCard/SwapRoute.vue';
 import { SwapQuote } from '@/composables/swap/types';
 import useRelayerApproval, {
@@ -270,10 +269,7 @@ const {
 
 const batchRelayerApproval = useRelayerApprovalTx(RelayerType.BATCH);
 
-const cowswapRelayerApproval = useRelayerApprovalTx(
-  RelayerType.COWSWAP,
-  props.swapping.isCowswapSwap
-);
+
 
 const lidoRelayerApproval = useRelayerApprovalTx(RelayerType.LIDO, isStETHSwap);
 
@@ -288,12 +284,7 @@ const requiresBatchRelayerApproval = computed(
     !batchRelayerSignature.value
 );
 
-const requiresCowswapRelayerApproval = computed(
-  () =>
-    props.swapping.isCowswapSwap.value &&
-    props.swapping.requiresTokenApproval.value &&
-    !cowswapRelayerApproval.isUnlocked.value
-);
+
 
 const requiresLidoRelayerApproval = computed(
   () =>
@@ -306,13 +297,7 @@ const showBatchRelayerApprovalStep = computed(
     !batchRelayerApproval.isUnlocked.value
 );
 
-const showCowswapRelayerApprovalStep = computed(
-  () =>
-    requiresCowswapRelayerApproval.value ||
-    cowswapRelayerApproval.init.value ||
-    cowswapRelayerApproval.approved.value ||
-    cowswapRelayerApproval.approving.value
-);
+
 
 const showLidoRelayerApprovalStep = computed(
   () =>
@@ -326,7 +311,6 @@ const showLidoRelayerApprovalStep = computed(
 const requiresApproval = computed(
   () =>
     requiresBatchRelayerApproval.value ||
-    requiresCowswapRelayerApproval.value ||
     requiresLidoRelayerApproval.value
 );
 
@@ -338,9 +322,8 @@ const showPriceUpdateError = computed(
 const actions = computed((): TransactionActionInfo[] => {
   const actions: TransactionActionInfo[] = [];
 
-  if (showCowswapRelayerApprovalStep.value) {
-    actions.push(cowswapRelayerApproval.action.value);
-  } else if (showLidoRelayerApprovalStep.value) {
+ 
+   if (showLidoRelayerApprovalStep.value) {
     actions.push(lidoRelayerApproval.action.value);
   } else if (showBatchRelayerApprovalStep.value) {
     actions.push(batchRelayerApprovalAction.value);
@@ -356,7 +339,7 @@ const actions = computed((): TransactionActionInfo[] => {
     confirmingLabel: t('confirming'),
     action: swap as () => Promise<any>,
     stepTooltip:
-      props.swapping.isCowswapSwap.value && !props.swapping.isJoinExitSwap
+      !props.swapping.isJoinExitSwap
         ? t('swapSummary.transactionTypesTooltips.sign.content')
         : t('swapSummary.transactionTypesTooltips.swap.content'),
   });
@@ -622,30 +605,7 @@ onBeforeMount(async () => {
             </div>
           </div>
         </template>
-        <div v-if="swapping.isCowswapSwap.value" class="p-3 text-sm">
-          <div class="summary-item-row">
-            <div>
-              {{ labels.swapSummary.totalBeforeFees }}
-            </div>
-            <div v-html="summary.amountBeforeFees" />
-          </div>
-          <div class="summary-item-row">
-            <div>{{ $t('swapSummary.gasCosts') }}</div>
-            <div class="text-green-400">-{{ zeroFee }}</div>
-          </div>
-          <div class="summary-item-row">
-            <div>{{ labels.swapSummary.swapFees }}</div>
-            <div
-              v-html="
-                swapping.isWrapUnwrapSwap.value
-                  ? zeroFee
-                  : swapping.exactIn.value
-                  ? `-${summary.swapFees}`
-                  : `+${summary.swapFees}`
-              "
-            />
-          </div>
-        </div>
+    
         <template #footer>
           <div
             class="p-3 w-full text-sm bg-white dark:bg-gray-800 rounded-b-lg"

@@ -1,11 +1,10 @@
 import { useSwapAssets } from '@/composables/swap/useSwapAssets';
 import { parseFixed } from '@ethersproject/bignumber';
-
 import LS_KEYS from '@/constants/local-storage.keys';
 import { NATIVE_ASSET_ADDRESS } from '@/constants/tokens';
 import { bnum, lsSet } from '@/lib/utils';
 import { getWrapAction, WrapType } from '@/lib/utils/balancer/wrapper';
-import { COW_SUPPORTED_NETWORKS } from '@/services/cowswap_deprecated/constants';
+
 import {
   canUseJoinExit,
   someJoinExit,
@@ -18,7 +17,6 @@ import { networkId } from '../useNetwork';
 import useNumbers, { FNumFormats } from '../useNumbers';
 import { useTokens } from '@/providers/tokens.provider';
 import { useUserSettings } from '@/providers/user-settings.provider';
-import useCowswap from './useCowswap';
 import useSor from './useSor';
 import useJoinExit from './useJoinExit';
 
@@ -96,9 +94,6 @@ export default function useSwapping(
     };
   });
 
-  const isCowswapSupportedOnNetwork = computed(() =>
-    COW_SUPPORTED_NETWORKS.includes(networkId.value)
-  );
 
   const swapRoute = computed<SwapRoute>(() => {
     if (wrapType.value !== WrapType.NonWrap) {
@@ -106,10 +101,7 @@ export default function useSwapping(
     } else if (isNativeAssetSwap.value) {
       return 'balancer';
     }
-
-    if (swapGasless.value && isCowswapSupportedOnNetwork.value) {
-      return 'cowswap';
-    } else {
+    
       const swapInfoAvailable =
         joinExit.swapInfo.value?.returnAmount &&
         !joinExit.swapInfo.value?.returnAmount.isZero();
@@ -131,10 +123,8 @@ export default function useSwapping(
         : false;
       // Currently joinExit swap is only suitable for ExactIn and non-eth swaps
       return joinExitSwapPresent ? 'joinExit' : 'balancer';
-    }
+    
   });
-
-  const isCowswapSwap = computed(() => swapRoute.value === 'cowswap');
 
   const isBalancerSwap = computed(() => swapRoute.value === 'balancer');
 
@@ -167,21 +157,8 @@ export default function useSwapping(
     tokenIn,
     tokenOut,
     slippageBufferRate,
-    isCowswapSwap,
   });
 
-  const cowswap = useCowswap({
-    exactIn,
-    tokenInAddressInput,
-    tokenInAmountInput,
-    tokenOutAddressInput,
-    tokenOutAmountInput,
-    tokenInAmountScaled,
-    tokenOutAmountScaled,
-    tokenIn,
-    tokenOut,
-    slippageBufferRate,
-  });
 
   const joinExit = useJoinExit({
     exactIn,
@@ -202,38 +179,24 @@ export default function useSwapping(
       return false;
     }
 
-    if (isCowswapSwap.value) {
-      return cowswap.updatingQuotes.value;
-    }
-
     return joinExit.swapInfoLoading.value || sor.poolsLoading.value;
   });
 
   const isConfirming = computed(
     () =>
       sor.confirming.value ||
-      cowswap.confirming.value ||
       joinExit.confirming.value
   );
 
   const submissionError = computed(
     () =>
       sor.submissionError.value ||
-      cowswap.submissionError.value ||
       joinExit.submissionError.value
   );
 
   // METHODS
   async function swap(successCallback?: () => void) {
-    if (isCowswapSwap.value) {
-      return cowswap.swap(() => {
-        if (successCallback) {
-          successCallback();
-        }
-
-        cowswap.resetState();
-      });
-    } else if (isJoinExitSwap.value) {
+   if (isJoinExitSwap.value) {
       return joinExit.swap(() => {
         if (successCallback) {
           successCallback();
@@ -255,7 +218,6 @@ export default function useSwapping(
 
   function resetSubmissionError() {
     sor.submissionError.value = null;
-    cowswap.submissionError.value = null;
     joinExit.submissionError.value = null;
   }
 
@@ -272,9 +234,7 @@ export default function useSwapping(
   }
 
   function getQuote() {
-    if (isCowswapSwap.value) {
-      return cowswap.getQuote();
-    }
+   
     if (isJoinExitSwap.value) {
       return joinExit.getQuote();
     }
@@ -291,17 +251,10 @@ export default function useSwapping(
     } else {
       tokenInAmountInput.value = '';
     }
-
-    cowswap.resetState(false);
     sor.resetState();
     joinExit.resetState();
-
-    if (isCowswapSwap.value) {
-      cowswap.handleAmountChange();
-    } else {
-      await sor.handleAmountChange();
-      await joinExit.handleAmountChange();
-    }
+    await sor.handleAmountChange();
+    await joinExit.handleAmountChange();
   }
 
   // WATCHERS
@@ -326,11 +279,7 @@ export default function useSwapping(
   });
 
   watch(blockNumber, () => {
-    if (isCowswapSwap.value) {
-      if (!cowswap.hasValidationError.value) {
-        cowswap.handleAmountChange();
-      }
-    } else if (isJoinExitSwap.value) {
+ if (isJoinExitSwap.value) {
       if (!joinExit.hasValidationError.value) {
         joinExit.handleAmountChange();
       }
@@ -358,10 +307,8 @@ export default function useSwapping(
     swapRoute,
     exactIn,
     isLoading,
-    cowswap,
     sor,
     joinExit,
-    isCowswapSwap,
     isBalancerSwap,
     isJoinExitSwap,
     wrapType,
@@ -377,7 +324,6 @@ export default function useSwapping(
     swapGasless,
     toggleSwapGasless,
     isGaslessSwappingDisabled,
-    isCowswapSupportedOnNetwork,
     resetAmounts,
     // methods
     getQuote,

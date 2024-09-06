@@ -124,6 +124,6 @@ export default class VeBAL {
   }
 
   public get address(): string {
-    return this.service.config.addresses.veBAL;
+    return this.service.config.addresses.veFls;
   }
 }
