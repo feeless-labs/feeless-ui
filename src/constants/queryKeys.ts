@@ -1,7 +1,6 @@
 import { Network } from '@/lib/config/types';
 import { TransactionReceipt } from '@ethersproject/abstract-provider';
 import { Ref } from 'vue';
-
 import { SubgraphGauge } from '@/services/balancer/gauges/types';
 import { NativeAsset, TokenInfo } from '@/types/TokenList';
 import { GaugeShare } from '@/composables/queries/useUserGaugeSharesQuery';
@@ -188,9 +187,9 @@ const QUERY_KEYS = {
       { networkId, pricesToInject },
     ],
     AllPrices: ['tokens', 'prices'],
-    VeBAL: (networkId: Ref<Network>, account: Ref<string>) => [
+    VeFLS: (networkId: Ref<Network>, account: Ref<string>) => [
       'tokens',
-      'veBAL',
+      'veFLS',
       { networkId, account },
     ],
   },

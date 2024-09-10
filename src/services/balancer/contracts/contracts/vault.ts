@@ -11,7 +11,6 @@ import {
   isSwappingHaltable,
   isWeightedLike,
   isDeep,
-  isComposableStableLike,
   isComposableStable,
 } from '@/composables/usePoolHelpers';
 import VaultAbi from '@/lib/abi/VaultAbi.json';
@@ -84,14 +83,12 @@ export default class Vault {
     } else if (isStableLike(type)) {
       poolMulticaller.call('amp', poolAddress, 'getAmplificationParameter');
 
-      if (isComposableStableLike(type)) {
-        // Overwrite totalSupply with virtualSupply for StablePhantom pools
-        poolMulticaller.call('totalSupply', poolAddress, 'getVirtualSupply');
+    
         if (isComposableStable(type)) {
           // Overwrite totalSupply with actualSupply for ComposableStable pools
           poolMulticaller.call('totalSupply', poolAddress, 'getActualSupply');
         }
-      }
+      
 
       if (isDeep(pool)) {
         Object.keys(tokens).forEach((token, i) => {

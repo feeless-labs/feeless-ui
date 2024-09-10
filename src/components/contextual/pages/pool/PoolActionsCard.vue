@@ -15,7 +15,7 @@ import { useTokens } from '@/providers/tokens.provider';
 import { bnum } from '@/lib/utils';
 import { usePoolWarning } from '@/composables/usePoolWarning';
 import { PoolWarning } from '@/types/pools';
-
+import useNetwork from '@/composables/useNetwork';
 /**
  * TYPES
  */

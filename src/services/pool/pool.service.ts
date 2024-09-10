@@ -1,6 +1,6 @@
 import { differenceInWeeks } from 'date-fns';
 
-import { isStable } from '@/composables/usePoolHelpers';
+
 import { oneSecondInMs } from '@/composables/useTime';
 import { bnum } from '@/lib/utils';
 import {
@@ -78,7 +78,7 @@ export default class PoolService {
   }
 
   formatPoolTokens(): PoolToken[] {
-    if (isStable(this.pool.poolType)) return this.pool.tokens;
+   
 
     return (this.pool.tokens = this.pool.tokens.sort(
       (a, b) => parseFloat(b.weight || '0') - parseFloat(a.weight || '0')

@@ -10,7 +10,6 @@ import TokenPills from '@/components/tables/PoolsTable/TokenPills/TokenPills.vue
 import useBreakpoints from '@/composables/useBreakpoints';
 import { getNetworkSlug } from '@/composables/useNetwork';
 import {
-  isGyro,
   isStableLike,
   isUnknownType,
   isVeBalPool,
@@ -265,15 +264,8 @@ function getPickedTokens(tokens: VotingPool['tokens']) {
             :pickedTokens="getPickedTokens(pool.tokens)"
           />
           <Ve8020Chip v-if="isVe8020Pool(pool)" />
-          <BalTooltip v-if="isGyro(pool)" :text="$t('clpTooltip')" width="56">
-            <template #activator>
-              <PoolFeatureChip
-                :feature="PoolFeature.CLP"
-                :protocols="[Protocol.Gyro]"
-                class="ml-1"
-              />
-            </template>
-          </BalTooltip>
+        
+       
           <BalChipNew v-if="isGaugeNew(pool)" class="ml-2" />
           <BalChipExpired
             v-if="getIsGaugeExpired(pool.gauge.address)"

@@ -99,7 +99,7 @@ export const tokensProvider = (
     injectedTokens: {},
     spenders: compact([
       networkConfig.addresses.vault,
-      configService.network.addresses.veBAL,
+      configService.network.addresses.veFls,
     ]),
     injectedPrices: staticPrices, // Usa i prezzi statici qui
   });

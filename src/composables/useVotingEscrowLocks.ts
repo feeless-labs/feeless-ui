@@ -98,7 +98,7 @@ export default function useVotingEscrowLocks() {
   const lastReceivedVebal = computed(
     () =>
       votingEscrowLocks.value?.find(item =>
-        isSameAddress(item.votingEscrowID.id, networkConfig.addresses.veBAL)
+        isSameAddress(item.votingEscrowID.id, networkConfig.addresses.veFls)
       )?.updatedAt || 0
   );
 

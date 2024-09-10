@@ -5,7 +5,6 @@ import {
   flatTokenTree,
   isComposableStableV1,
   isDeep,
-  isPreMintedBptType,
   isRecoveryExitsOnly,
   tokenTreeLeafs,
   tokenTreeNodes,
@@ -181,7 +180,7 @@ export const exitPoolProvider = (
   );
 
   const canSwapExit = computed(
-    (): boolean => isDeep(pool.value) && isPreMintedBptType(pool.value.poolType)
+    (): boolean => isDeep(pool.value) 
   );
 
   const shouldUseSwapExit = computed(

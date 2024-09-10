@@ -58,7 +58,7 @@ const { pool, isLoadingPool } = usePool();
 const {
   isStableLikePool,
   isLiquidityBootstrappingPool,
-  isComposableStableLikePool,
+  isComposableStablePool,
   isDeprecatedPool,
   isNewPoolAvailable,
 } = usePoolHelpers(pool);
@@ -208,7 +208,7 @@ watch(
           :titleTokens="titleTokens"
           :missingPrices="missingPrices"
           :isLiquidityBootstrappingPool="isLiquidityBootstrappingPool"
-          :isComposableStableLikePool="isComposableStableLikePool"
+          :isComposableStableLikePool="isComposableStablePool"
           @set-restake-visibility="setRestakeVisibility"
         />
       </div>

@@ -5,8 +5,8 @@ import { TOKENS } from '@/constants/tokens';
 import { getAddressFromPoolId } from '@/lib/utils';
 import { retryPromiseWithDelay } from '@/lib/utils/promise';
 import { configService as _configService } from '@/services/config/config.service';
-import { CoingeckoClient } from '../coingecko.client';
-import { CoingeckoService, getPlatformId } from '../coingecko.service';
+import { CoingeckoClient } from '../coingecko.client.ts';
+import { CoingeckoService, getPlatformId } from '../coingecko.service.ts';
 import { getAddress } from '@ethersproject/address';
 
 /**

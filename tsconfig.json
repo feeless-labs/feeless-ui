@@ -34,7 +34,7 @@
     "src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx"
-, "src/composables/queries/usePoolsQueryDemo.ts"  ],
+, "src/composables/queries/usePoolsQueryDemo.ts", "src/services/coingecko/coingecko.client.ts", "src/services/coingecko/coingecko.service.ts"  ],
   "exclude": ["node_modules", "dist"],
   "files": ["node_modules/jest-extended/types/index.d.ts"]
 }

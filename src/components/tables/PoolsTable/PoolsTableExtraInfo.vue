@@ -3,7 +3,6 @@ import {
   isLiquidityBootstrapping,
   isBoosted,
   protocolsFor,
-  isGyro,
 } from '@/composables/usePoolHelpers';
 import { Pool } from '@/services/pool/types';
 import { PoolFeature } from '@/types/pools';
@@ -31,15 +30,6 @@ defineProps<Props>();
       </template>
     </BalTooltip>
 
-    <BalTooltip v-if="isGyro(pool)" :text="$t('clpTooltip')" width="56">
-      <template #activator>
-        <PoolFeatureChip
-          :feature="PoolFeature.CLP"
-          :protocols="[Protocol.Gyro]"
-          class="ml-1"
-        />
-      </template>
-    </BalTooltip>
 
     <BalChip
       v-if="isLiquidityBootstrapping(pool.poolType)"

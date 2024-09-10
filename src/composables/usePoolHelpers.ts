@@ -59,18 +59,6 @@ export function isLinear(poolType: PoolType): boolean {
   return allLinearTypes.includes(poolType);
 }
 
-export function isStable(poolType: PoolType): boolean {
-  return poolType === PoolType.Stable;
-}
-
-export function isMetaStable(poolType: PoolType): boolean {
-  return poolType === PoolType.MetaStable;
-}
-
-export function isStablePhantom(poolType: PoolType): boolean {
-  return poolType === PoolType.StablePhantom;
-}
-
 export function isComposableStable(poolType: PoolType): boolean {
   return poolType === PoolType.ComposableStable;
 }
@@ -79,18 +67,8 @@ export function isComposableStableV1(pool: Pool): boolean {
   return isComposableStable(pool.poolType) && pool.poolTypeVersion === 1;
 }
 
-export function isComposableStableLike(poolType: PoolType): boolean {
-  return isStablePhantom(poolType) || isComposableStable(poolType);
-}
-
 export function isFx(poolType: PoolType | string): boolean {
   return poolType === 'FX';
-}
-
-export function isPreMintedBptType(poolType: PoolType): boolean {
-  // Currently equivalent to isComposableStableLike but will be extended later
-  // with managed and composable weighted pools.
-  return isStablePhantom(poolType) || isComposableStable(poolType);
 }
 
 /**
@@ -105,12 +83,6 @@ export function isDeep(pool: Pool): boolean {
 export function isBoosted(pool: Pool) {
   return !!Object.keys(poolMetadata(pool.id)?.features || {}).includes(
     PoolFeature.Boosted
-  );
-}
-
-export function isGyro(pool: Pool | VotingPool) {
-  return [PoolType.Gyro2, PoolType.Gyro3, PoolType.GyroE].includes(
-    pool.poolType
   );
 }
 
@@ -139,9 +111,6 @@ export function isShallowComposableStable(pool: Pool): boolean {
 
 export function isStableLike(poolType: PoolType): boolean {
   return (
-    isStable(poolType) ||
-    isMetaStable(poolType) ||
-    isStablePhantom(poolType) ||
     isComposableStable(poolType) ||
     isFx(poolType)
   );
@@ -165,7 +134,7 @@ export function isWeighted(poolType: PoolType): boolean {
 
 export function isManaged(poolType: PoolType): boolean {
   // Correct terminology is managed pools but subgraph still returns poolType = "Investment"
-  return poolType === PoolType.Investment;
+  return poolType === PoolType.Managed;
 }
 
 export function isWeightedLike(poolType: PoolType): boolean {
@@ -267,15 +236,7 @@ export function poolURLFor(
   pool: Pick<Pool, 'id' | 'poolType'>,
   network: Network
 ): string {
-  if (network === Network.OPTIMISM) {
-    return `https://op.beets.fi/#/pool/${pool.id}`;
-  }
-  if (pool.poolType && pool.poolType.toString() === 'Element') {
-    return `https://app.element.fi/pools/${addressFor(pool.id)}`;
-  }
-  if (pool.poolType && pool.poolType.toString() === 'FX') {
-    return `https://app.xave.co/#/pool`;
-  }
+
 
   return `${appUrl()}/${getNetworkSlug(network)}/pool/${pool.id}`;
 }
@@ -733,15 +694,7 @@ export function usePoolHelpers(pool: Ref<AnyPool> | Ref<undefined>) {
   /**
    * COMPUTED
    */
-  const isStablePool = computed(
-    (): boolean => !!pool.value && isStable(pool.value.poolType)
-  );
-  const isMetaStablePool = computed(
-    (): boolean => !!pool.value && isMetaStable(pool.value.poolType)
-  );
-  const isStablePhantomPool = computed(
-    (): boolean => !!pool.value && isStablePhantom(pool.value.poolType)
-  );
+
   const isComposableStablePool = computed(
     (): boolean => !!pool.value && isComposableStable(pool.value.poolType)
   );
@@ -754,12 +707,7 @@ export function usePoolHelpers(pool: Ref<AnyPool> | Ref<undefined>) {
   const isStableLikePool = computed(
     (): boolean => !!pool.value && isStableLike(pool.value.poolType)
   );
-  const isComposableStableLikePool = computed(
-    (): boolean => !!pool.value && isComposableStableLike(pool.value.poolType)
-  );
-  const isPreMintedBptPool = computed(
-    (): boolean => !!pool.value && isPreMintedBptType(pool.value.poolType)
-  );
+
   const isWeightedPool = computed(
     (): boolean => !!pool.value && isWeighted(pool.value.poolType)
   );
@@ -812,13 +760,9 @@ export function usePoolHelpers(pool: Ref<AnyPool> | Ref<undefined>) {
 
   return {
     // computed
-    isStablePool,
-    isMetaStablePool,
-    isStablePhantomPool,
+   
     isComposableStablePool,
     isStableLikePool,
-    isComposableStableLikePool,
-    isPreMintedBptPool,
     isDeepPool,
     isShallowComposableStablePool,
     isWeightedPool,
@@ -832,16 +776,11 @@ export function usePoolHelpers(pool: Ref<AnyPool> | Ref<undefined>) {
     isDeprecatedPool,
     isNewPoolAvailable,
     poolJoinTokens,
-    // methods
-    isStable,
-    isMetaStable,
-    isStablePhantom,
     isStableLike,
     isWeighted,
     isLiquidityBootstrapping,
     isWeightedLike,
     isSwappingHaltable,
-    isPreMintedBptType,
     isWrappedNativeAsset,
     noInitLiquidity,
     isMigratablePool,

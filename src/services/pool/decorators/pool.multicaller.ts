@@ -9,7 +9,6 @@ import {
   isStableLike,
   isSwappingHaltable,
   isWeightedLike,
-  isComposableStableLike,
   isComposableStable,
 } from '@/composables/usePoolHelpers';
 import ERC20_ABI from '@/lib/abi/ERC20.json';
@@ -112,14 +111,6 @@ export class PoolMulticaller {
           abi: PoolTypeABIs,
         });
 
-        if (isComposableStableLike(pool.poolType)) {
-          // Overwrite totalSupply with virtualSupply for StablePhantom pools
-          multicaller.call({
-            key: `${pool.id}.totalSupply`,
-            address: pool.address,
-            function: 'getVirtualSupply',
-            abi: PoolTypeABIs,
-          });
           if (isComposableStable(pool.poolType)) {
             multicaller.call({
               key: `${pool.id}.totalSupply`,
@@ -128,7 +119,6 @@ export class PoolMulticaller {
               abi: PoolTypeABIs,
             });
           }
-        }
       }
     });
 

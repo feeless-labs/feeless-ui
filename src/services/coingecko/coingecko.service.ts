@@ -1,6 +1,6 @@
 import { SUPPORTED_FIAT } from '@/constants/currency';
 import { MockPriceService } from './api/mockPriceService';
-import { coingeckoClient } from './coingecko.client';
+import { coingeckoClient } from './coingecko.client.ts';
 import config from '@/lib/config';
 
 export const getNativeAssetId = (chainId: string): string => {

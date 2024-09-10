@@ -34,7 +34,7 @@ const { isWalletReady } = useWeb3();
  * COMPUTED
  */
 const tabs = computed(() =>
-  isDeepPool.value || isStablePhantomPool.value
+  isDeepPool.value 
     ? [
         {
           value: PoolTransactionsTab.ALL_ACTIVITY,
@@ -68,7 +68,7 @@ const tabs = computed(() =>
 /**
  * COMPOSABLES
  */
-const { isDeepPool, isStablePhantomPool } = usePoolHelpers(
+const { isDeepPool } = usePoolHelpers(
   toRef(props, 'pool')
 );
 const { t } = useI18n();
@@ -82,7 +82,7 @@ const activeTab = ref(tabs.value[0].value);
  * COMPUTED
  */
 const title = computed((): string => {
-  if (isDeepPool.value || isStablePhantomPool.value) return t('poolActivity');
+  if (isDeepPool.value ) return t('poolActivity');
 
   return t('liquidityProvision');
 });
@@ -99,7 +99,7 @@ const title = computed((): string => {
       </div>
     </div>
 
-    <template v-if="isStablePhantomPool || isDeepPool">
+    <template v-if="isDeepPool">
       <BoostedActivities
         v-if="activeTab === PoolTransactionsTab.ALL_ACTIVITY"
         :poolActivityType="PoolTransactionsTab.ALL_ACTIVITY"

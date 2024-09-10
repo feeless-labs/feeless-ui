@@ -19,7 +19,7 @@ const showRedirectModal = ref(false);
  * COMPUTED
  */
 export const isVeBalSupported = computed<boolean>(
-  () => configService.network.addresses.veBAL !== ''
+  () => configService.network.addresses.veFls !== ''
 );
 
 /**

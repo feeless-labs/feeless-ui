@@ -46,6 +46,7 @@ const pools: Pools = {
       '0x9231737db8c9f43db7b5c007211c714efde54cba00020000000000000000000b',
     ],
   },
+
   Factories: {
     '0x14C4F1e47793e60b25083bc7d3a88B08cF7774E3': 'weightedPool',
     '0xd0ca61fe288B591A9E70fC5058297d39Cc3bE458': 'liquidityBootstrappingPool', // Mainnet LBP (zero protocol fee)

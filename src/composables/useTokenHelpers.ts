@@ -7,7 +7,7 @@ import { TokenInfo } from '@/types/TokenList';
 
 import { useTokens } from '@/providers/tokens.provider';
 
-const balAddress = getAddress(TOKENS.Addresses.BAL);
+const balAddress = getAddress(TOKENS.Addresses.wFLS);
 
 function isBalAddress(address: string): boolean {
   return isSameAddress(address, balAddress);
